@@ -25,11 +25,15 @@ TypeId TypedColumnDataFactory::DeduceColumnType() const {
     bool is_undefined = true;
     std::bitset<5> candidate_types_bitset("11111");
     TypeId first_type_id = TypeId::kUndefined;
+    auto matcher_map_iter = kTypeIdToChecker.begin();
     for (std::size_t i = 0; i != unparsed_.size(); ++i) {
         if (!kNullCheck(unparsed_[i]) && !kEmptyCheck(unparsed_[i])) {
             is_undefined = false;
             if (first_type_id != TypeId::kUndefined) {
-                auto& type_check = kTypeIdToChecker.at(first_type_id);
+                auto it =
+                        std::find_if(matcher_map_iter, kTypeIdToChecker.end(),
+                                     [&](auto const& pair) { return pair.first == first_type_id; });
+                auto& type_check = it->second;
                 if (type_check(unparsed_[i])) {
                     // undelimited and delimited dates have different bitsets
                     if (first_type_id == TypeId::kDate && kDelimitedDateCheck(unparsed_[i])) {
