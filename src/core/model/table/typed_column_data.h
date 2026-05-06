@@ -217,21 +217,21 @@ private:
     inline static std::vector<
             std::pair<TypeId, std::function<bool(std::string const&)>>> const
             kTypeIdToChecker = {
-                    {TypeId::kDouble,
-                     [](std::string const& val) {
-                         return boost::regex_match(val, kTypeIdToRegex.at(+TypeId::kDouble));
-                     }},
-                    {TypeId::kBigInt,
-                     [](std::string const& val) {
-                         return boost::regex_match(val, kTypeIdToRegex.at(+TypeId::kBigInt));
+                    {TypeId::kDate, [](std::string const& val) {
+                         return boost::regex_match(val, kTypeIdToRegex.at(+TypeId::kDate)) &&
+                                (kDelimitedDateCheck(val) || kUndelimitedDateCheck(val));
                      }},
                     {TypeId::kInt,
                      [](std::string const& val) {
                          return boost::regex_match(val, kTypeIdToRegex.at(+TypeId::kInt));
                      }},
-                    {TypeId::kDate, [](std::string const& val) {
-                         return boost::regex_match(val, kTypeIdToRegex.at(+TypeId::kDate)) &&
-                                (kDelimitedDateCheck(val) || kUndelimitedDateCheck(val));
+                    {TypeId::kBigInt,
+                     [](std::string const& val) {
+                         return boost::regex_match(val, kTypeIdToRegex.at(+TypeId::kBigInt));
+                     }},
+                    {TypeId::kDouble,
+                     [](std::string const& val) {
+                         return boost::regex_match(val, kTypeIdToRegex.at(+TypeId::kDouble));
                      }}};
     // each 1 represents a possible type from kAllCandidateTypes
     inline static std::unordered_map<TypeId, std::bitset<5>> const kTypeIdToBitset = {
