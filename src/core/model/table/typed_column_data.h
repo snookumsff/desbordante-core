@@ -214,10 +214,10 @@ private:
                 }
                 return is_simple_date;
             };
-    inline static std::vector<
-            std::pair<TypeId, std::function<bool(std::string const&)>>> const
+    inline static std::vector<std::pair<TypeId, std::function<bool(std::string const&)>>> const
             kTypeIdToChecker = {
-                    {TypeId::kDate, [](std::string const& val) {
+                    {TypeId::kDate,
+                     [](std::string const& val) {
                          return boost::regex_match(val, kTypeIdToRegex.at(+TypeId::kDate)) &&
                                 (kDelimitedDateCheck(val) || kUndelimitedDateCheck(val));
                      }},
@@ -229,8 +229,7 @@ private:
                      [](std::string const& val) {
                          return boost::regex_match(val, kTypeIdToRegex.at(+TypeId::kBigInt));
                      }},
-                    {TypeId::kDouble,
-                     [](std::string const& val) {
+                    {TypeId::kDouble, [](std::string const& val) {
                          return boost::regex_match(val, kTypeIdToRegex.at(+TypeId::kDouble));
                      }}};
     // each 1 represents a possible type from kAllCandidateTypes
